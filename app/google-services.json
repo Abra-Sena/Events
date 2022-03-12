@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "178087073157",
+    "project_id": "events-ca0c0",
+    "storage_bucket": "events-ca0c0.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:178087073157:android:62565648f5f79b480660ec",
+        "android_client_info": {
+          "package_name": "com.emissa.apps.events"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "178087073157-ivvgaeignmhntccubp4rolr4cp094bco.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBwuydfNo_nKSojT__CvNRs5IMt1zTN-fg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "178087073157-ivvgaeignmhntccubp4rolr4cp094bco.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

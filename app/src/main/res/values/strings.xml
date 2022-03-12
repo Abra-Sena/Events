@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">Events</string>
+    <string name="label_create_event">Add Event</string>
+    <string name="label_event_details">Event Details</string>
+    <string name="event_title">Event Title</string>
+    <string name="event_category">Event category</string>
+    <string name="event_date">Event date</string>
+    <string name="btn_done">DONE</string>
+    <string name="button_done">Button DONE</string>
+    <string name="fab_add">Add</string>
+</resources>
