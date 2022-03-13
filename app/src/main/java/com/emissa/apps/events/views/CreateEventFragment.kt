@@ -25,7 +25,7 @@ class CreateEventFragment : Fragment() {
 
     private val viewModel: EventsViewModel by activityViewModels {
         EventsViewModelFactory(
-            (requireActivity()?.application as EventsApplication).database.eventDao()
+            (requireActivity().application as EventsApplication).database.eventDao()
         )
     }
     private var mBinding: FragmentCreateEventBinding? = null
@@ -61,7 +61,7 @@ class CreateEventFragment : Fragment() {
 
         val id = navigationArgs.eventId
         if (id > 0) {
-            viewModel.retrieveEvent(id).observe(this.viewLifecycleOwner) { selectedEvent ->
+            viewModel.retrieveEvent(id).observe(viewLifecycleOwner) { selectedEvent ->
                 event = selectedEvent
                 bindEvent(event)
             }
@@ -88,6 +88,7 @@ class CreateEventFragment : Fragment() {
         val action = CreateEventFragmentDirections.actionCreateEventsToEventsFragment()
         this.findNavController().navigate(action)
     }
+
     private fun updateEvent() {
         viewModel.updateEvent(
             this.navigationArgs.eventId,

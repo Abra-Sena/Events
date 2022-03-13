@@ -51,20 +51,20 @@ class EventFragment : Fragment(), EventClickListener {
             adapter = eventAdapter
         }
         // Attach an observer to the list of events to automatically update UI
-        viewModel.allEvents.observe(this.viewLifecycleOwner) { events ->
+        viewModel.allEvents.observe(viewLifecycleOwner) { events ->
             events.let { eventAdapter.updateEventsList(it) }
         }
 
         // open second fragment to create new event
         binding.fabAddEvent.setOnClickListener {
             val action = EventFragmentDirections.actionEventsFragmentToCreateEvents()
-            this.findNavController().navigate(action)
+            findNavController().navigate(action)
         }
     }
 
     override fun onEventClicked(event: Event) {
         val action = EventFragmentDirections.actionEventsFragmentToEventDetails(event.id)
-        this.findNavController().navigate(action)
+        findNavController().navigate(action)
     }
 
     override fun onEventLongClicked(event: Event) {
