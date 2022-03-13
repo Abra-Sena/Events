@@ -7,29 +7,29 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.emissa.apps.events.EventsApplication
 import com.emissa.apps.events.EventsViewModel
 import com.emissa.apps.events.EventsViewModelFactory
 import com.emissa.apps.events.databinding.FragmentCreateEventBinding
-import com.emissa.apps.events.fragmentNavigation
 import com.emissa.apps.events.model.Event
+import java.text.SimpleDateFormat
+import java.util.*
 
 
 class CreateEventFragment : Fragment() {
-    private val LOG_TAG: String = "CreateEventFragment"
     private val navigationArgs: EventDetailsFragmentArgs by navArgs()
     lateinit var event: Event
+    lateinit var selectedDate: String
 
     private val viewModel: EventsViewModel by activityViewModels {
         EventsViewModelFactory(
-            (activity?.application as EventsApplication).database.eventDao()
+            (requireActivity()?.application as EventsApplication).database.eventDao()
         )
     }
     private var mBinding: FragmentCreateEventBinding? = null
     private val binding get() = mBinding!!
-
-//    private val binding by lazy { FragmentCreateEventBinding.inflate(layoutInflater) }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -43,9 +43,20 @@ class CreateEventFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        val calendarView = binding.calendarView
 
-        binding.calendarView.setOnDateChangeListener { calendarView, year, month, day ->
-            Log.d(LOG_TAG, "Date is: $calendarView.date or $month/$day/$year")
+
+        // set events date based on user's selection or the actual date
+        // need to work on  condition statement to handle this efficiently
+        val date: Long = calendarView.date
+        selectedDate = SimpleDateFormat("MM/dd/yyyy").format(date)
+        Log.d("CreateEventFrag", "Selected date is $selectedDate")
+
+        calendarView.setOnDateChangeListener { _, year, month, day ->
+            Log.d("CreateEventFrag", "User selecting a date")
+            val currentMonth: Int = month + 1
+            selectedDate = "$currentMonth/$day/$year"
+            Log.d("CreateEventFrag", "Selected date is $selectedDate")
         }
 
         val id = navigationArgs.eventId
@@ -56,34 +67,26 @@ class CreateEventFragment : Fragment() {
             }
         } else {
             binding.btnAddEvent.setOnClickListener {
-                Log.d(LOG_TAG, "Clicked on btn Done inside create event")
                 addNewEvent()
-                fragmentNavigation(
-                    supportFragmentManager = requireActivity().supportFragmentManager,
-                    EventFragment()
-                )
             }
         }
     }
 
     private fun bindEvent(event: Event) {
-//        val date
         binding.apply {
             etEventTitle.setText(event.title)
             etEventCategory.setText(event.category)
-            cvEventDate.text = event.date
         }
     }
+
     private fun addNewEvent() {
         viewModel.addNewEvent(
             binding.etEventTitle.text.toString(),
             binding.etEventCategory.text.toString(),
-            binding.calendarView.date.toString()
+            selectedDate
         )
-        fragmentNavigation(
-            supportFragmentManager = requireActivity().supportFragmentManager,
-            EventFragment()
-        )
+        val action = CreateEventFragmentDirections.actionCreateEventsToEventsFragment()
+        this.findNavController().navigate(action)
     }
     private fun updateEvent() {
         viewModel.updateEvent(
@@ -92,5 +95,7 @@ class CreateEventFragment : Fragment() {
             this.binding.etEventCategory.text.toString(),
             this.binding.calendarView.date.toString()
         )
+        val action = CreateEventFragmentDirections.actionCreateEventsToEventsFragment()
+        this.findNavController().navigate(action)
     }
 }

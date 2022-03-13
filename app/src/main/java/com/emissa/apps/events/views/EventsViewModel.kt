@@ -3,10 +3,11 @@ package com.emissa.apps.events
 import androidx.lifecycle.*
 import com.emissa.apps.events.model.Event
 import com.emissa.apps.events.model.EventDao
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
-import java.lang.IllegalArgumentException
 
 class EventsViewModel(private val eventDao: EventDao) : ViewModel() {
+//    val allEvents: Flow<List<Event>> = eventDao.getAllEvents()
     val allEvents: LiveData<List<Event>> = eventDao.getAllEvents().asLiveData()
 
     fun updateEvent(

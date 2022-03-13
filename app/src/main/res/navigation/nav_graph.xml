@@ -11,11 +11,11 @@
         android:label="@string/app_name"
         tools:layout="@layout/fragment_event" >
         <action
-            android:id="@+id/action_events_fragment_to_create_events"
-            app:destination="@id/create_events" />
-        <action
             android:id="@+id/action_events_fragment_to_event_details"
             app:destination="@id/event_details" />
+        <action
+            android:id="@+id/action_events_fragment_to_create_events"
+            app:destination="@id/create_events" />
     </fragment>
 
     <fragment
@@ -24,12 +24,12 @@
         android:label="@string/label_create_event"
         tools:layout="@layout/fragment_create_event">
         <argument
-            android:name="title"
-            app:argType="string" />
-        <argument
             android:name="event_id"
             android:defaultValue="-1"
             app:argType="integer" />
+        <action
+            android:id="@+id/action_create_events_to_events_fragment"
+            app:destination="@id/events_fragment" />
     </fragment>
 
     <fragment
@@ -40,5 +40,8 @@
         <argument
             android:name="event_id"
             app:argType="integer" />
+        <action
+            android:id="@+id/action_event_details_to_events_fragment"
+            app:destination="@id/events_fragment" />
     </fragment>
 </navigation>

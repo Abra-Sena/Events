@@ -1,5 +1,6 @@
 package com.emissa.apps.events.views
 
+import android.content.pm.ActivityInfo
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -14,14 +15,12 @@ import com.emissa.apps.events.adapter.EventAdapter
 import com.emissa.apps.events.adapter.EventClickListener
 import com.emissa.apps.events.databinding.FragmentEventBinding
 import com.emissa.apps.events.model.Event
-import com.google.firebase.firestore.ktx.firestore
-import com.google.firebase.ktx.Firebase
 
 class EventFragment : Fragment(), EventClickListener {
 
     private val viewModel: EventsViewModel by activityViewModels {
         EventsViewModelFactory(
-            (activity?.application as EventsApplication).database.eventDao()
+            (requireActivity()?.application as EventsApplication).database.eventDao()
         )
     }
     private var mBinding: FragmentEventBinding? = null
@@ -52,31 +51,30 @@ class EventFragment : Fragment(), EventClickListener {
             adapter = eventAdapter
         }
         // Attach an observer to the list of events to automatically update UI
-//        viewModel.allEvents.observe(this.viewLifecycleOwner) { events ->
-//            events.let { eventAdapter.submitList(it) }
-//        }
-        // save event
-        val event = hashMapOf(
-            "title" to "First Event",
-            "category" to "Testing event creation, adding data to firestore",
-            "date" to "03/11/2022"
-        )
+        viewModel.allEvents.observe(this.viewLifecycleOwner) { events ->
+            events.let { eventAdapter.updateEventsList(it) }
+        }
 
         // open second fragment to create new event
         binding.fabAddEvent.setOnClickListener {
-//            findNavController().navigate(R.id.action_events_fragment_to_create_events)
-            fragmentNavigation(
-                supportFragmentManager = requireActivity().supportFragmentManager,
-                CreateEventFragment()
-            )
+            val action = EventFragmentDirections.actionEventsFragmentToCreateEvents()
+            this.findNavController().navigate(action)
         }
     }
 
     override fun onEventClicked(event: Event) {
-//        findNavController().navigate(R.id.action_events_fragment_to_event_details)
-        fragmentNavigation(
-            supportFragmentManager = requireActivity().supportFragmentManager,
-            EventDetailsFragment()
-        )
+        val action = EventFragmentDirections.actionEventsFragmentToEventDetails(event.id)
+        this.findNavController().navigate(action)
+    }
+
+    override fun onEventLongClicked(event: Event) {
+        Log.d("Events", "Inside event delete click listener")
+        viewModel.deleteEvent(event)
+        findNavController().navigateUp()
+    }
+
+
+    private fun deleteEvent() {
+
     }
 }

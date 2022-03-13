@@ -13,7 +13,7 @@ import com.emissa.apps.events.views.CreateEventFragment
 
 class EventAdapter(
     private val eventClickListener: EventClickListener,
-    private val eventList: MutableList<Event> = mutableListOf()
+    private var eventList: MutableList<Event> = mutableListOf()
 ): RecyclerView.Adapter<EventViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): EventViewHolder {
         val eventView = LayoutInflater.from(parent.context)
@@ -41,6 +41,11 @@ class EventAdapter(
         eventList.add(0, event)
         // notifies the adapter that a new event was inserted
         notifyItemInserted(eventList.indexOf(event))
+    }
+
+    fun updateEventsList(events: List<Event>) {
+        this.eventList = events as MutableList<Event>
+        notifyDataSetChanged()
     }
 }
 
