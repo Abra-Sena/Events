@@ -28,7 +28,7 @@ class EventDetailsFragment : Fragment() {
 
     private val viewModel: EventsViewModel by activityViewModels {
         EventsViewModelFactory(
-            (requireActivity()?.application as EventsApplication).database.eventDao()
+            (requireActivity().application as EventsApplication).database.eventDao()
         )
     }
 

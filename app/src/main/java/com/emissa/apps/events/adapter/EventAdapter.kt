@@ -23,13 +23,17 @@ class EventAdapter(
 
     override fun onBindViewHolder(holder: EventViewHolder, position: Int) {
         val event = eventList[position]
-        holder.itemView.setOnClickListener {
-            val activity = it.context as AppCompatActivity
-            fragmentNavigation(
-                supportFragmentManager = activity.supportFragmentManager,
-                CreateEventFragment()
-            )
-        }
+
+        // this click is already handled under the bind method in the view holder
+
+//        holder.itemView.setOnClickListener {
+//            val activity = it.context as AppCompatActivity
+//            fragmentNavigation(
+//                supportFragmentManager = activity.supportFragmentManager,
+//                CreateEventFragment()
+//            )
+//        }
+
         holder.bind(event)
     }
 
@@ -44,7 +48,7 @@ class EventAdapter(
     }
 
     fun updateEventsList(events: List<Event>) {
-        this.eventList = events as MutableList<Event>
+        eventList = events.toMutableList()
         notifyDataSetChanged()
     }
 }
